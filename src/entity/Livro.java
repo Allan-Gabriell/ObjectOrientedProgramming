@@ -12,9 +12,6 @@ public class Livro {
     private int estoque;
     private double preco;
 
-    private static List<Livro> livros = new ArrayList<>();
-
-    public Livro() {}
 
     public Livro(int isbn, String titulo, String autor, int edicao, String genero, int estoque, double preco) {
         this.isbn = isbn;
@@ -24,46 +21,6 @@ public class Livro {
         this.genero = genero;
         this.estoque = estoque;
         this.preco = preco;
-    }
-
-    public static void criarLivro(int isbn, String titulo, String autor, int edicao, String genero, int estoque, double preco) {
-        Livro livro = new Livro(isbn, titulo, autor, edicao, genero, estoque, preco);
-        livros.add(livro);
-    }
-
-    public static Livro lerLivro(int isbn) {
-        for (Livro livro : livros) {
-            if (livro.getIsbn() == isbn) {
-                return livro;
-            }
-        }
-        return null;
-    }
-
-    public static void atualizarLivro(int isbn, int novoEstoque) {
-        Livro livro = lerLivro(isbn);
-        if (livro != null) {
-            livro.setEstoque(novoEstoque);
-        }
-    }
-
-    public static void deletarLivro(int isbn) {
-        livros.removeIf(livro -> livro.getIsbn() == isbn);
-    }
-
-    public void exibirDadosLivro() {
-        System.out.println(this);
-    }
-
-    public static List<Livro> listarLivros() {
-        return livros;
-    }
-
-    @Override
-    public String toString() {
-        return "Livro [isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor +
-                ", edicao=" + edicao + ", genero=" + genero + ", estoque=" + estoque +
-                ", preco=" + preco + "]";
     }
 
     // Getters e Setters
@@ -87,4 +44,11 @@ public class Livro {
 
     public double getPreco() { return preco; }
     public void setPreco(double preco) { this.preco = preco; }
+
+   @Override
+       public String toString() {
+           return "Livro [isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor +
+                   ", edicao=" + edicao + ", genero=" + genero + ", estoque=" + estoque +
+                   ", preco=" + preco + "]";
+       }
 }
