@@ -9,18 +9,18 @@ import java.util.Date;
 
 public class SaleDAO {
     public void resgisterSale (Sale sale){
-        String sql = "INSERT INTO venda (ID_VENDA, VALOR_TOTAL, DATA) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO venda (DATA_VENDA, ID_CLIENTE, ID_FUNCIONARIO) VALUES (?, ?, ?)";
 
         PreparedStatement ps = null;
         try {
             ps = Conection.getConnection().prepareStatement(sql);
 
-            ps.setInt(1, sale.getId());
-            ps.setDouble(2, sale.getTotalValue());
-
             Date utilDate = sale.getDate();
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-            ps.setDate(3, sqlDate);
+            ps.setDate(1, sqlDate);
+            ps.setInt(2, sale.getClient().getId());
+            ps.setInt(3, sale.getFuncionario().getId());
+
 
             ps.execute();
             ps.close();

@@ -20,7 +20,7 @@ public class ClientService {
         clientDAO.resgisterClient(client);
     }
     
-    public List<Client> getAllClients(){
+    public List<Client> listClients(){
         try {
             return clientDAO.loadClients();
         } catch (SQLException e) {
@@ -34,9 +34,9 @@ public class ClientService {
         Client client = new Client();
         client = clientDAO.searchClientById(id);
 
-        System.out.print("Informe o novo nome do cliente: ");
+        System.out.print("Informe o nome do cliente: ");
         client.setName(sc.nextLine());
-        System.out.print("Informe o novo CPF: ");
+        System.out.print("Informe o CPF: ");
         client.setCpf(sc.nextLine());
         
         clientDAO.updateClient(client);

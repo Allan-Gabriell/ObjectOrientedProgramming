@@ -1,17 +1,34 @@
 package entity;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Sale {
     private int id;
     private double totalValue;
     private Date date;
+    private Client client;
+    private Employee funcionario;
 
-    // Constructor
-    public Sale(int id, double totalValue, Date date) {
-        this.id = id;
-        this.totalValue = totalValue;
-        this.date = date;
+    // public Sale(int id, double totalValue, Date date) {
+    //     this.id = id;
+    //     this.totalValue = totalValue;
+    //     this.date = date;
+    // }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Employee getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Employee funcionario) {
+        this.funcionario = funcionario;
     }
 
     // Get and Set
@@ -39,9 +56,10 @@ public class Sale {
         this.totalValue = totalValue;
     }
 
-    // To String
     @Override
     public String toString() {
-        return "Sale{" +  "id=" + id +  ", totalValue=" + totalValue +  ", date=" + date +  '}';
+        return "Sale [id=" + id + ", totalValue=" + totalValue + ", date=" + date + ", client=" + client
+                + ", funcionario=" + funcionario + "]";
     }
+
 }

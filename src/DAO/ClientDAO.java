@@ -32,22 +32,22 @@ public class ClientDAO {
     public List<Client> loadClients () throws SQLException {
         String sql = "SELECT ID_CLIENTE, NOME_CLIENTE, CPF_CLIENTE FROM cliente";
         PreparedStatement ps = null;
-        ResultSet result = null;
+        ResultSet resultSet = null;
         List<Client> clients = new ArrayList<>();
 
         try {
             ps = Conection.getConnection().prepareStatement(sql);
-            result = ps.executeQuery();
+            resultSet = ps.executeQuery();
             
-            while(result.next()){
+            while(resultSet.next()){
                 Client client = new Client();
-                client.setId(result.getInt("ID_CLIENTE"));
-                client.setName(result.getString("NOME_CLIENTE"));
-                client.setCpf(result.getString("CPF_CLIENTE"));
+                client.setId(resultSet.getInt("ID_CLIENTE"));
+                client.setName(resultSet.getString("NOME_CLIENTE"));
+                client.setCpf(resultSet.getString("CPF_CLIENTE"));
                 clients.add(client);
             }
         } finally {
-            if(result != null) result.close();
+            if(resultSet != null) resultSet.close();
             if(ps != null) ps.close();
         }
         return clients;
@@ -56,24 +56,24 @@ public class ClientDAO {
     public Client searchClientById(int id) throws SQLException{
     String sql = "SELECT ID_CLIENTE, NOME_CLIENTE, CPF_CLIENTE FROM cliente WHERE ID_CLIENTE = ?";
     PreparedStatement ps = null;
-    ResultSet result = null;
+    ResultSet resultSet = null;
     Client client = null;
-        try{
-            ps = Conection.getConnection().prepareStatement(sql);
-            ps.setInt(1, id);
+    try{
+        ps = Conection.getConnection().prepareStatement(sql);
+        ps.setInt(1, id);
 
-            result = ps.executeQuery();
-            if(result.next()){
-                client = new Client();
-                client.setId(result.getInt("ID_CLIENTE"));
-                client.setName(result.getString("NOME_CLIENTE"));
-                client.setCpf(result.getString("CPF_CLIENTE"));
-            }
-        } finally {
-            if(result != null) result.close();
-            if(ps != null) ps.close();
+        resultSet = ps.executeQuery();
+        if(resultSet.next()){
+            client = new Client();
+            client.setId(resultSet.getInt("ID_CLIENTE"));
+            client.setName(resultSet.getString("NOME_CLIENTE"));
+            client.setCpf(resultSet.getString("CPF_CLIENTE"));
         }
-        return client;
+    } finally {
+        if(resultSet != null) resultSet.close();
+        if(ps != null) ps.close();
+    }
+    return client;
     }
 
     public void updateClient(Client client) throws SQLException {
