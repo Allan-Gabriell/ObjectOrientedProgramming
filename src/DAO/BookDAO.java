@@ -8,7 +8,7 @@ import conection.Conection;
 import entity.Book;
 
 public class BookDAO {
-    public void criarLivro(Book livro) {
+    public void createBook (Book livro) {
         String sql = "INSERT INTO livro (ISBN_LIVRO, TITULO_LIVRO, AUTOR_LIVRO, EDICAO_LIVRO, GENERO_LIVRO, ESTOQUE_LIVRO, PRECO_LIVRO) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = Conection.getConnection().prepareStatement(sql)) {
             ps.setInt(1, livro.getIsbn());
@@ -50,46 +50,46 @@ public class BookDAO {
         }
 
         return book;
-    };
+    }
 
-    // public void atualizarLivroEstoque(int isbn, int novoEstoque) throws SQLException {
-    //     String sql = "UPDATE livro SET ESTOQUE = ? WHERE ISBN = ?";
-    //     try (PreparedStatement ps = Conection.getConnection().prepareStatement(sql)) {
-    //         ps.setInt(1, novoEstoque);
-    //         ps.setInt(2, isbn);
-    //         ps.executeUpdate();
-    //         System.out.println("DAO: Estoque do livro ISBN " + isbn + " atualizado.");
-    //     }
-    // }
+    public void atualizeBookStock (int isbn, int newStock) throws SQLException{
+        String sql = "UPDATE livro SET ESTOQUE = ? WHERE ISBN = ?";
+             try (PreparedStatement ps = Conection.getConnection().prepareStatement(sql)) {
+                ps.setInt(1, newStock);
+                 ps.setInt(2, isbn);
+                 ps.executeUpdate();
+                 System.out.println("DAO: O nNovo estoque: " +newStock+ ", Foi atribuido ao livro de ISBN " + isbn);
+             }
+    }
 
-    // public void deletarLivro(int isbn) throws SQLException {
-    //     String sql = "DELETE FROM livro WHERE ISBN = ?";
-    //     try (PreparedStatement ps = Conection.getConnection().prepareStatement(sql)) {
-    //         ps.setInt(1, isbn);
-    //         ps.executeUpdate();
-    //         System.out.println("DAO: Livro ISBN " + isbn + " deletado.");
-    //     }
-    // }
+    public void deleteBook (int isbn) throws SQLException{
+        String sql = "DELETE FROM livro WHERE ISBN_LIVRO = ?";
+        try (Connection conn = Conection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, isbn);
+            ps.executeUpdate();
+            System.out.println("DAO: Livro com ISBN " + isbn + "deletado com sucesso");
+        }
+    }
 
-    // public List<Livro> listarLivros() throws SQLException {
-    //     List<Livro> livros = new ArrayList<>();
-    //     String sql = "SELECT * FROM livro";
+    public List<Book> listBooks() throws SQLException {
+        List<Book> books = new ArrayList<>();
+         String sql = "SELECT * FROM livro";
 
-    //     try (PreparedStatement ps = Conection.getConnection().prepareStatement(sql);
-    //          ResultSet rs = ps.executeQuery()) {
-    //         while (rs.next()) {
-    //             Livro livro = new Livro(
-    //                 rs.getInt("ISBN"),
-    //                 rs.getString("TITULO"),
-    //                 rs.getString("AUTOR"),
-    //                 rs.getInt("EDICAO"),
-    //                 rs.getString("GENERO"),
-    //                 rs.getInt("ESTOQUE"),
-    //                 rs.getDouble("PRECO")
-    //             );
-    //             livros.add(livro);
-    //         }
-    //     }
-    //     return livros;
-    // }
+        try (PreparedStatement ps = Conection.getConnection().prepareStatement(sql);
+              ResultSet rs = ps.executeQuery()) {
+             while (rs.next()) {
+                 Book book = new Book();
+                 book.setIsbn(rs.getInt("ISBN_LIVRO"));
+                 book.setTitle(rs.getString("TITULO_LIVRO"));
+                 book.setAuthor(rs.getString("AUTOR_LIVRO"));
+                 book.setEdition(rs.getInt("EDICAO_LIVRO"));
+                 book.setGender(rs.getString("GENERO_LIVRO"));
+                 book.setStock(rs.getInt("ESTOQUE_LIVRO"));
+                 book.setPrice(rs.getDouble("PRECO_LIVRO"));
+                 books.add(book);
+             }
+         }
+         return books;
+     }
 }

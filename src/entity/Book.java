@@ -9,17 +9,6 @@ public class Book {
     private int stock;
     private double price;
 
-
-    // public Livro(int isbn, String title, String author, int edition, String gender, int stock, double price) {
-    //     this.isbn = isbn;
-    //     this.title = title;
-    //     this.author = author;
-    //     this.edition = edition;
-    //     this.gender = gender;
-    //     this.stock = stock;
-    //     this.price = price;
-    // }
-
     public int getIsbn(){
         return isbn; 
     }
@@ -75,6 +64,6 @@ public class Book {
        public String toString() {
            return "Livro [isbn=" + isbn + ", title=" + title + ", author=" + author +
                    ", edition=" + edition + ", gender=" + gender + ", stock=" + stock +
-                   ", price=" + price + "]";
+                   ", price=" + String.format("%.2f", price) + "]";
        }
 }
