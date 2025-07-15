@@ -9,6 +9,19 @@ public class Book {
     private int stock;
     private double price;
 
+    public Book() {
+    }
+
+    public Book(int isbn, String title, String author, int edition, String gender, int stock, double price) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.edition = edition;
+        this.gender = gender;
+        this.stock = stock;
+        this.price = price;
+    }
+ 
     public int getIsbn(){
         return isbn; 
     }

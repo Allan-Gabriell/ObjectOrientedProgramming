@@ -68,7 +68,7 @@ public class BookDAO {
              PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setInt(1, isbn);
             ps.executeUpdate();
-            System.out.println("DAO: Livro com ISBN " + isbn + "deletado com sucesso");
+            System.out.println("DAO: Livro com ISBN " + isbn + " deletado com sucesso");
         }
     }
 

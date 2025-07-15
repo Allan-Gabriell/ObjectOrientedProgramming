@@ -11,6 +11,7 @@ import entity.Employee;
 import entity.Book;
 import entity.Sale;
 import entity.SaleItem;
+import services.BookService;
 import services.ClientService;
 import services.EmployeeService;
 
@@ -18,17 +19,21 @@ public class App {
     public static void main(String[] args) throws Exception {
         final ClientDAO clientDAO = new ClientDAO();
         final EmployeeDAO employeeDAO = new EmployeeDAO();
-        ClientService clientService = new ClientService(clientDAO);
-        EmployeeService employeeService = new EmployeeService(employeeDAO);
+        final BookDAO bookDAO = new BookDAO();
+        // ClientService clientService = new ClientService(clientDAO);
+        // EmployeeService employeeService = new EmployeeService(employeeDAO);
 
-        // employeeService.newEmployee("Maria", "maria@", false, "1234");
+        BookService bookService = new BookService(bookDAO);
+        // bookService.newBook(124, "Dom Casmurro", "Machado de Assis", 1, "Romance", 100, 30);
+        bookService.deleteBook(124);
+        // // employeeService.newEmployee("Maria", "maria@", false, "1234");
         // employeeService.displayEmployeeData();
         // employeeService.deletedEmployee(4);
-        List<Employee> employees = new ArrayList<>();
-        employees = employeeService.listEmployees();
-        for(Employee employee: employees){
-            System.out.println(employee);
-        }
+        // List<Employee> employees = new ArrayList<>();
+        // employees = employeeService.listEmployees();
+        // for(Employee employee: employees){
+        //     System.out.println(employee);
+        // }
         // clientService.newClient("Wanderson Carvalho", "789456964");
         // clientService.newClient("Jonas", "13579086426");
         // List<Client> clients = clientService.getAllClients();
