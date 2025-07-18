@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class Conection {
     public static final String url = "jdbc:mysql://nozomi.proxy.rlwy.net:36361/livraria_db";
     public static final String user = "root";
-    public static final String senha = "MzBmDCuIjLBYNwZWznpBEYdDqbOqRvAS";
+    public static final String password = "MzBmDCuIjLBYNwZWznpBEYdDqbOqRvAS";
 
     public static Connection conn;
 
@@ -15,7 +15,7 @@ public class Conection {
     public static Connection getConnection(){
         try {
             if(conn == null){
-                conn = DriverManager.getConnection(url, user, senha);
+                conn = DriverManager.getConnection(url, user, password);
                 return conn;
             } else {
                 return conn;

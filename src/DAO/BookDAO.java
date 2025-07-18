@@ -9,16 +9,16 @@ import entity.Book;
 
 public class BookDAO {
     
-    public void createBook (Book livro) {
+    public void createBook (Book book) {
         String sql = "INSERT INTO livro (ISBN_LIVRO, TITULO_LIVRO, AUTOR_LIVRO, EDICAO_LIVRO, GENERO_LIVRO, ESTOQUE_LIVRO, PRECO_LIVRO) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = Conection.getConnection().prepareStatement(sql)) {
-            ps.setInt(1, livro.getIsbn());
-            ps.setString(2, livro.getTitle());
-            ps.setString(3, livro.getAuthor());
-            ps.setInt(4, livro.getEdition());
-            ps.setString(5, livro.getGender());
-            ps.setInt(6, livro.getStock());
-            ps.setDouble(7, livro.getPrice());
+            ps.setInt(1, book.getIsbn());
+            ps.setString(2, book.getTitle());
+            ps.setString(3, book.getAuthor());
+            ps.setInt(4, book.getEdition());
+            ps.setString(5, book.getGender());
+            ps.setInt(6, book.getStock());
+            ps.setDouble(7, book.getPrice());
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();

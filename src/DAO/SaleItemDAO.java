@@ -17,7 +17,7 @@ public class SaleItemDAO {
         try {
             ps = Conection.getConnection().prepareStatement(sql);
             ps.setInt(1, saleItem.getQuantity());
-            ps.setInt(2, saleItem.getIdVenda());
+            ps.setInt(2, saleItem.getIdSale());
             ps.setInt(3, saleItem.getIsbn());
             
             ps.executeUpdate();
@@ -45,7 +45,7 @@ public class SaleItemDAO {
             while (rs.next()) {
                 SaleItem saleItem = new SaleItem();
                 saleItem.setId(rs.getInt("ID_ITEM"));
-                saleItem.setIdVenda(rs.getInt("ID_VENDA"));
+                saleItem.setIdSale(rs.getInt("ID_VENDA"));
                 saleItem.setIsbn(rs.getInt("ISBN_LIVRO"));
                 saleItem.setQuantity(rs.getInt("QUANTIDADE_ITEM"));
 
@@ -106,7 +106,7 @@ public class SaleItemDAO {
                 saleItem = new SaleItem();
                 saleItem.setId(resultSet.getInt("ID_ITEM"));
                 saleItem.setQuantity(resultSet.getInt("QUANTIDADE_ITEM"));
-                saleItem.setIdVenda(resultSet.getInt("ID_VENDA"));
+                saleItem.setIdSale(resultSet.getInt("ID_VENDA"));
                 saleItem.setIsbn(resultSet.getInt("ISBN_LIVRO"));
             } 
         } finally {

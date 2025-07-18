@@ -47,7 +47,7 @@ public class SaleItemService {
     
         saleItem.setQuantity(quantity);
         bookDAO.atualizeStockBook(isbn, book.getStock() - quantity);
-        saleItem.setIdVenda(saleDAO.getLastSale().getId());
+        saleItem.setIdSale(saleDAO.getLastSale().getId());
         saleItemDAO.createSaleItem(saleItem);
     
         sc.nextLine();
@@ -97,7 +97,7 @@ public class SaleItemService {
             bookDAO.atualizeStockBook(newIsbn, book.getStock() - quantity);
             sc.nextLine();
     
-            newItem.setIdVenda(saleDAO.getLastSale().getId());
+            newItem.setIdSale(saleDAO.getLastSale().getId());
             saleItemDAO.createSaleItem(newItem);
         }
     
