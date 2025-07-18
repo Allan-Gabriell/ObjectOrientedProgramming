@@ -15,6 +15,7 @@ import services.BookService;
 import services.ClientService;
 import services.EmployeeService;
 import services.SaleItemService;
+import services.SaleService;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -24,7 +25,10 @@ public class App {
         final SaleItemDAO saleItemDAO = new SaleItemDAO();
         final SaleDAO saleDAO = new SaleDAO();
         final SaleItemService saleItemService = new SaleItemService(saleItemDAO, saleDAO, bookDAO);
-        saleItemService.createSaleItem(124);
+        SaleService saleService = new SaleService(saleDAO);
+
+        saleService.updateSale(7);
+        // saleItemService.createSaleItem(124);
         // saleItemService.dataDisplayItem();
         // saleItemService.editSaleItem(4);
         // saleItemService.deleteSaleItem(13);

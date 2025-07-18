@@ -19,8 +19,8 @@ public class SaleDAO {
         try {
             ps = Conection.getConnection().prepareStatement(sql);
 
-            Date utilDate = sale.getDate();
-            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            java.sql.Date sqlDate = new java.sql.Date(sale.getDate().getTime());
+
             ps.setDate(1, sqlDate);
             ps.setInt(2, sale.getIdCliente());
             ps.setInt(3, sale.getIdFuncionario());
@@ -59,9 +59,51 @@ public class SaleDAO {
         return sale;
     }
 
-    public void updateSale(int id){
+    public Sale searchSale(int id) throws SQLException {
+        String sql = "SELECT * FROM venda WHERE ID_VENDA = ?";
+        PreparedStatement ps = null;
+        ResultSet resultSet = null;
+        Sale sale = null;
+
+        try {
+            ps = Conection.getConnection().prepareStatement(sql);
+            ps.setInt(1, id);
+
+            resultSet = ps.executeQuery();
+
+            if(resultSet.next()){
+                sale = new Sale();
+                sale.setId(resultSet.getInt("ID_VENDA"));
+                sale.setDate(resultSet.getDate("DATA_VENDA"));
+                sale.setIdCliente(resultSet.getInt("ID_CLIENTE"));
+                sale.setIdFuncionario(resultSet.getInt("ID_FUNCIONARIO"));
+            }
+        } finally {
+            if(resultSet != null) resultSet.close();
+            if(ps != null) ps.close();
+        }
+        return sale;
+    }
+
+    public void updateSale(Sale sale) throws SQLException{
         String sql = "UPDATE venda SET DATA_VENDA = ?, ID_CLIENTE = ?, ID_FUNCIONARIO = ? WHERE ID_VENDA = ?";
-        
+        PreparedStatement ps = null;
+         try {
+            ps = Conection.getConnection().prepareStatement(sql);
+
+            // Converte java.util.Date para java.sql.Date
+            java.sql.Date sqlDate = new java.sql.Date(sale.getDate().getTime());
+            
+            ps.setDate(1, sqlDate);
+            ps.setInt(2, sale.getIdCliente());
+            ps.setInt(3, sale.getIdFuncionario());
+            ps.setInt(4, sale.getId());
+
+            ps.executeUpdate();
+            System.out.println("DAO: Venda ID " + sale.getId() + " atualizado com sucesso!");
+        } finally {
+            if(ps != null) ps.close();
+        }
     }
 
 }
