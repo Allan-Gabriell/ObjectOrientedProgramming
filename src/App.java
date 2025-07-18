@@ -14,18 +14,43 @@ import entity.SaleItem;
 import services.BookService;
 import services.ClientService;
 import services.EmployeeService;
+import services.SaleItemService;
 
 public class App {
     public static void main(String[] args) throws Exception {
         final ClientDAO clientDAO = new ClientDAO();
         final EmployeeDAO employeeDAO = new EmployeeDAO();
         final BookDAO bookDAO = new BookDAO();
+        final SaleItemDAO saleItemDAO = new SaleItemDAO();
+        final SaleDAO saleDAO = new SaleDAO();
+        final SaleItemService saleItemService = new SaleItemService(saleItemDAO, saleDAO, bookDAO);
+        // saleItemService.createSaleItem(124);
+        saleItemService.dataDisplayItem();
+        // saleItemService.editSaleItem(4);
+        // saleItemService.deleteSaleItem(13);
+        // saleItemService.dataDisplayItem();
+        // System.out.println("Valor total da compra: R$ " + saleItemService.calculateSubtotal());
+        // System.out.println(saleDAO.getLastSale().getId());
+        
         // ClientService clientService = new ClientService(clientDAO);
         // EmployeeService employeeService = new EmployeeService(employeeDAO);
+        // // employeeService.createEmployee("Allan", "allan@", true, "123#");
 
-        BookService bookService = new BookService(bookDAO);
+        // // employeeService.logIn("allan@", "123");
+        // System.out.println(employeeService.readEmployee(14));
+
+        // BookService bookService = new BookService(bookDAO);
         // bookService.newBook(124, "Dom Casmurro", "Machado de Assis", 1, "Romance", 100, 30);
-        bookService.deleteBook(124);
+        // bookService.readBook(124);
+        // bookService.updateBook(124);
+        // bookService.displayBookData();
+        // List<Book> books = new ArrayList<>();
+        // books = bookService.listBooks();
+
+        // for(Book book: books){
+        //     System.out.println(book);
+        // }
+        // bookService.deleteBook(124);
         // // employeeService.newEmployee("Maria", "maria@", false, "1234");
         // employeeService.displayEmployeeData();
         // employeeService.deletedEmployee(4);

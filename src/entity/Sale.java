@@ -6,8 +6,8 @@ public class Sale {
     private int id;
     private double totalValue;
     private Date date;
-    private Client client;
-    private Employee funcionario;
+    private int idCliente;
+    private int idFuncionario;
 
     // public Sale(int id, double totalValue, Date date) {
     //     this.id = id;
@@ -15,20 +15,21 @@ public class Sale {
     //     this.date = date;
     // }
 
-    public Client getClient() {
-        return client;
+
+    public int getIdCliente() {
+        return idCliente;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
-    public Employee getFuncionario() {
-        return funcionario;
+    public int getIdFuncionario() {
+        return idFuncionario;
     }
 
-    public void setFuncionario(Employee funcionario) {
-        this.funcionario = funcionario;
+    public void setIdFuncionario(int idFuncionario) {
+        this.idFuncionario = idFuncionario;
     }
 
     // Get and Set
@@ -58,8 +59,7 @@ public class Sale {
 
     @Override
     public String toString() {
-        return "Sale [id=" + id + ", totalValue=" + totalValue + ", date=" + date + ", client=" + client
-                + ", funcionario=" + funcionario + "]";
+        return "Sale [id=" + id + ", totalValue=" + totalValue + ", date=" + date + ", idCliente=" + idCliente
+                + ", idFuncionario=" + idFuncionario + "]";
     }
-
 }

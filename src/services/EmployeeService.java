@@ -15,23 +15,24 @@ public class EmployeeService {
         this.employeeDAO = employeeDAO;
     }
 
-    public void newEmployee(String name, String email, boolean admin, String password){
+    public void createEmployee(String name, String email, boolean admin, String password){
         Employee employee = new Employee(name, email, admin, password);
         employeeDAO.registerEmployee(employee);
     }
 
-    public List<Employee> listEmployees(){
-        try{
-            return employeeDAO.loadEmployees();
-        } catch (SQLException e) {
-            System.out.println("Erro ao buscar a lista de funcionários. " + e.getMessage());
-            e.printStackTrace();
-            throw new RuntimeException("Não foi possível carregar a lista de funcionarios.");
+    public void logIn(String email, String password) throws SQLException{
+        Employee employee = employeeDAO.getLastEmployee();
+        if(employee.getEmail().equals(email) && employee.getPassword().equals(password)){
+            System.out.println("Loguin realizado com sucesso!");
+        } else {
+            System.out.println("Loguin ou senha inválidos informe novamente: ");
         }
     }
 
-    // o que seria a função ler funcionário?
-    //  falta a lunção de loguin
+    public Employee readEmployee(int id) throws SQLException{
+        Employee employee = employeeDAO.searchEmployee(id);
+        return employee;  
+    }
 
     public void updateEmployee(int id) throws SQLException{ 
         Employee employee = new Employee();
@@ -65,5 +66,15 @@ public class EmployeeService {
     public void displayEmployeeData() throws SQLException{
         Employee employee = employeeDAO.getLastEmployee();
         System.out.println(employee);
+    }
+
+    public List<Employee> listEmployees(){
+        try{
+            return employeeDAO.loadEmployees();
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar a lista de funcionários. " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Não foi possível carregar a lista de funcionarios.");
+        }
     }
 }

@@ -5,51 +5,36 @@ import java.util.List;
 public class SaleItem {
     private int id;
     private int quantity;
-    private Sale sale;
-    private List<Book> books;
-
-    public Sale getSale() {
-        return sale;
-    }
-
-    public void setSale(Sale sale) {
-        this.sale = sale;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
-
-    // Constructor
-    // public SaleItem(int id, int quantity) {
-    //     this.id = id;
-    //     this.quantity = quantity;
-    // }
-
-    // Get and Set
+    private int idVenda;
+    private int isbn;
+    
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     public int getQuantity() {
         return quantity;
     }
-
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+    public int getIdVenda() {
+        return idVenda;
+    }
+    public void setIdVenda(int idVenda) {
+        this.idVenda = idVenda;
+    }
+    public int getIsbn() {
+        return isbn;
+    }
+    public void setIsbn(int isbn) {
+        this.isbn = isbn;
+    }
 
-    // ToString
     @Override
     public String toString() {
-        return "SaleItem{" +  "id=" + id +  ", quantity=" + quantity +  '}';
+        return "SaleItem [id=" + id + ", quantity=" + quantity + ", idVenda=" + idVenda + ", isbn=" + isbn + "]";
     }
 }

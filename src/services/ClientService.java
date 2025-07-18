@@ -15,21 +15,11 @@ public class ClientService {
         this.clientDAO = clientDAO;
     }
 
-    public void newClient(String name, String cpf){
+    public void createClient(String name, String cpf){
         Client client = new Client(name, cpf);
         clientDAO.resgisterClient(client);
     }
     
-    public List<Client> listClients(){
-        try {
-            return clientDAO.loadClients();
-        } catch (SQLException e) {
-            System.out.println("Erro ao buscar a lista de clientes no banco de dados: " + e.getMessage());
-            e.printStackTrace();
-            throw new RuntimeException("Não foi possível carregar a lista de clientes.");
-        }
-    }
-
     public void updateClient(int id) throws SQLException{
         Client client = new Client();
         client = clientDAO.searchClientById(id);
@@ -47,8 +37,18 @@ public class ClientService {
         clientDAO.deletedClient(client);
     }
 
-    public void displayClient(int id) throws SQLException{
+    public void displayClientData(int id) throws SQLException{
         Client client = clientDAO.searchClientById(id);
         System.out.println(client);
+    }
+
+    public List<Client> listClients(){
+        try {
+            return clientDAO.loadClients();
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar a lista de clientes no banco de dados: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Não foi possível carregar a lista de clientes.");
+        }
     }
 }

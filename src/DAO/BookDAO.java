@@ -8,6 +8,7 @@ import conection.Conection;
 import entity.Book;
 
 public class BookDAO {
+    
     public void createBook (Book livro) {
         String sql = "INSERT INTO livro (ISBN_LIVRO, TITULO_LIVRO, AUTOR_LIVRO, EDICAO_LIVRO, GENERO_LIVRO, ESTOQUE_LIVRO, PRECO_LIVRO) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = Conection.getConnection().prepareStatement(sql)) {
@@ -37,6 +38,7 @@ public class BookDAO {
             resultSet = ps.executeQuery();
             if(resultSet.next()){
                 book = new Book();
+                book.setIsbn(resultSet.getInt("ISBN_LIVRO"));
                 book.setTitle(resultSet.getString("TITULO_LIVRO"));
                 book.setAuthor(resultSet.getString("AUTOR_LIVRO"));
                 book.setEdition(resultSet.getInt("EDICAO_LIVRO"));
@@ -52,14 +54,46 @@ public class BookDAO {
         return book;
     }
 
-    public void atualizeBookStock (int isbn, int newStock) throws SQLException{
-        String sql = "UPDATE livro SET ESTOQUE = ? WHERE ISBN = ?";
-             try (PreparedStatement ps = Conection.getConnection().prepareStatement(sql)) {
-                ps.setInt(1, newStock);
-                 ps.setInt(2, isbn);
-                 ps.executeUpdate();
-                 System.out.println("DAO: O nNovo estoque: " +newStock+ ", Foi atribuido ao livro de ISBN " + isbn);
-             }
+    public void atualizeStockBook(int isbn, int newStock) throws SQLException {
+        String sql = "UPDATE livro SET estoque_livro = ? WHERE isbn_livro = ?";
+        PreparedStatement ps = null;
+    
+        try {
+            ps = Conection.getConnection().prepareStatement(sql);
+            ps.setInt(1, newStock);
+            ps.setInt(2, isbn);
+            int rowsUpdated = ps.executeUpdate();
+    
+            if (rowsUpdated > 0) {
+                System.out.println("Estoque atualizado com sucesso para o livro de ISBN " + isbn);
+            } else {
+                System.out.println("Livro não encontrado para atualizar estoque.");
+            }
+        } finally {
+            if (ps != null) ps.close();
+        }
+    }
+    
+
+    public void atualizeBook (Book book) throws SQLException{
+        String sql = "UPDATE livro SET TITULO_LIVRO = ?, AUTOR_LIVRO = ?, EDICAO_LIVRO = ?, GENERO_LIVRO = ?, ESTOQUE_LIVRO = ?, PRECO_LIVRO = ? WHERE ISBN_LIVRO = ?"; 
+        PreparedStatement ps = null;
+
+        try {
+            ps = Conection.getConnection().prepareStatement(sql);
+            ps.setString(1, book.getTitle());
+            ps.setString(2, book.getAuthor());
+            ps.setInt(3, book.getEdition());
+            ps.setString(4, book.getGender());
+            ps.setInt(5, book.getStock());
+            ps.setDouble(6, book.getPrice());
+            ps.setInt(7, book.getIsbn());
+
+            ps.executeUpdate();
+            System.out.println("DAO: Livro ISBN " + book.getIsbn() + " atualizado com sucesso");
+        } finally {
+            if(ps != null) ps.close();
+        }
     }
 
     public void deleteBook (int isbn) throws SQLException{
@@ -92,4 +126,33 @@ public class BookDAO {
          }
          return books;
      }
+    
+    //para essa função funcionar corretamente tenho que adicionar um id em livro
+    public Book getLastBook() throws SQLException {
+        String sql = "SELECT * FROM livro ORDER BY ISBN_LIVRO DESC LIMIT 1";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Book book = null;
+
+        try{
+            ps = Conection.getConnection().prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if(rs.next()) {
+                book = new Book();
+                book.setIsbn(rs.getInt("ISBN_LIVRO"));
+                book.setTitle(rs.getString("TITULO_LIVRO"));
+                book.setAuthor(rs.getString("AUTOR_LIVRO"));
+                book.setEdition(rs.getInt("EDICAO_LIVRO"));
+                book.setGender(rs.getString("GENERO_LIVRO"));
+                book.setStock(rs.getInt("ESTOQUE_LIVRO"));
+                book.setPrice(rs.getDouble("PRECO_LIVRO"));
+            }
+        } finally {
+            if(ps != null) ps.close();
+            if(rs != null) rs.close();
+        }
+
+        return book;
+    }
 }
