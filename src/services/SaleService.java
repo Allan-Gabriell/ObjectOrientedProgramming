@@ -1,15 +1,16 @@
 package services;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Scanner;
 
 import DAO.SaleDAO;
 import entity.Sale;
 
 public class SaleService {
-    public SaleDAO saleDAO;
+    private SaleDAO saleDAO;
     Scanner sc = new Scanner(System.in);
-    // Criar função que cria uma venda
+
 
     public SaleService(SaleDAO saleDAO) {
         this.saleDAO = saleDAO;
@@ -22,5 +23,10 @@ public class SaleService {
         System.out.print("Inform o ID do funcionário: ");
         sale.setIdFuncionario(Integer.parseInt(sc.nextLine()));
         saleDAO.updateSale(sale);
+    }
+
+    public void createSale(Sale sale) {
+        saleDAO.resgisterSale(sale);
+        System.out.println("Venda criada com sucesso.");
     }
 }

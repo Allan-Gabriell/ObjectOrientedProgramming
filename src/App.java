@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import DAO.ClientDAO;
@@ -26,6 +27,13 @@ public class App {
         final SaleDAO saleDAO = new SaleDAO();
         final SaleItemService saleItemService = new SaleItemService(saleItemDAO, saleDAO, bookDAO);
         SaleService saleService = new SaleService(saleDAO);
+
+        Sale sale = new Sale();
+        sale.setDate(new Date());
+        sale.setIdCliente(8);
+        sale.setIdFuncionario(12);
+
+        saleService.createSale(sale);
 
         saleService.updateSale(7);
         // saleItemService.createSaleItem(124);
