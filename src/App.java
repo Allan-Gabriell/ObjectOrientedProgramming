@@ -24,8 +24,8 @@ public class App {
         final SaleItemDAO saleItemDAO = new SaleItemDAO();
         final SaleDAO saleDAO = new SaleDAO();
         final SaleItemService saleItemService = new SaleItemService(saleItemDAO, saleDAO, bookDAO);
-        // saleItemService.createSaleItem(124);
-        saleItemService.dataDisplayItem();
+        saleItemService.createSaleItem(124);
+        // saleItemService.dataDisplayItem();
         // saleItemService.editSaleItem(4);
         // saleItemService.deleteSaleItem(13);
         // saleItemService.dataDisplayItem();

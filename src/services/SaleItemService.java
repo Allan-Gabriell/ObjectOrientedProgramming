@@ -36,16 +36,22 @@ public class SaleItemService {
         SaleItem saleItem = new SaleItem();
         saleItem.setIsbn(isbn);
         System.out.println("O livro escolhido é: " + book.getTitle() + " valor: R$ " + book.getPrice());
+    
         System.out.print("Informe a quantidade: ");
         quantity = sc.nextInt();
-        saleItem.setQuantity(quantity);
-        bookDAO.atualizeStockBook(isbn, book.getStock()-quantity);
-        saleItem.setIdVenda(saleDAO.getLastSale().getId());
     
+        if (quantity > book.getStock()) {
+            System.out.println("Quantidade indisponível em estoque! Estoque atual: " + book.getStock());
+            return;
+        }
+    
+        saleItem.setQuantity(quantity);
+        bookDAO.atualizeStockBook(isbn, book.getStock() - quantity);
+        saleItem.setIdVenda(saleDAO.getLastSale().getId());
         saleItemDAO.createSaleItem(saleItem);
     
         sc.nextLine();
-
+    
         while (true) {
             System.out.print("Deseja adicionar um novo livro à compra? (1 - Sim, 2 - Não): ");
             try {
@@ -58,11 +64,9 @@ public class SaleItemService {
             if (answer != 1) {
                 break;
             }
-
-            List<Book> books = new ArrayList<>();
-            books = bookDAO.listBooks();
-
-            for(Book b: books){
+    
+            List<Book> books = bookDAO.listBooks();
+            for (Book b : books) {
                 System.out.println(b);
             }
     
@@ -79,10 +83,18 @@ public class SaleItemService {
             SaleItem newItem = new SaleItem();
             newItem.setIsbn(newIsbn);
             System.out.println("O livro escolhido é: " + book.getTitle() + " valor: R$ " + book.getPrice());
+    
             System.out.print("Informe a quantidade: ");
             quantity = sc.nextInt();
+    
+            if (quantity > book.getStock()) {
+                System.out.println("Quantidade indisponível em estoque! Estoque atual: " + book.getStock());
+                sc.nextLine();
+                continue;
+            }
+    
             newItem.setQuantity(quantity);
-            bookDAO.atualizeStockBook(newIsbn, book.getStock()-quantity);
+            bookDAO.atualizeStockBook(newIsbn, book.getStock() - quantity);
             sc.nextLine();
     
             newItem.setIdVenda(saleDAO.getLastSale().getId());
@@ -91,6 +103,7 @@ public class SaleItemService {
     
         System.out.println("Itens adicionados à venda com sucesso!");
     }
+    
 
     public void dataDisplayItem() throws SQLException{
         List<SaleItem> saleItems = saleItemDAO.loadSaleItem();
@@ -115,13 +128,47 @@ public class SaleItemService {
     }
 
     public void editSaleItem(int id) throws SQLException {
-        SaleItem saleItem = saleItemDAO.searchSaleItem(id);
-        System.out.print("Informe a quantidade: ");
-        saleItem.setQuantity(Integer.parseInt(sc.nextLine()));
-        System.out.print("Informe o ID da venda: ");
-        saleItem.setIdVenda(Integer.parseInt(sc.nextLine()));
-        System.out.print("Informe o ISBN: ");
-        saleItem.setIsbn(Integer.parseInt(sc.nextLine()));
-        saleItemDAO.updateSaleItem(saleItem);
+        SaleItem currentItem = saleItemDAO.searchSaleItem(id);
+        int Isbn = currentItem.getIsbn();
+        int Quantity = currentItem.getQuantity();
+    
+        Book Book = bookDAO.searcBookByISBNBook(Isbn);
+        if (Book != null) {
+            bookDAO.atualizeStockBook(Isbn, Book.getStock() + Quantity);
+        }
+
+        System.out.print("Deseja mudar o livro? (1 - Sim, 2 - Não): ");
+        int option = Integer.parseInt(sc.nextLine());
+    
+        int newIsbn = Isbn;
+        Book newBook = Book;
+    
+        if (option == 1) {
+            System.out.print("Informe o novo ISBN: ");
+            newIsbn = Integer.parseInt(sc.nextLine());
+            newBook = bookDAO.searcBookByISBNBook(newIsbn);
+            if (newBook == null) {
+                System.out.println("Livro não encontrado!");
+                bookDAO.atualizeStockBook(Isbn, Book.getStock());
+                return;
+            }
+        }
+
+        System.out.print("Informe a nova quantidade: ");
+        int newQuantity = Integer.parseInt(sc.nextLine());
+    
+        if (newBook.getStock() < newQuantity) {
+            System.out.println("Estoque insuficiente para o livro com ISBN " + newIsbn);
+            bookDAO.atualizeStockBook(Isbn, Book.getStock());
+            return;
+        }
+
+        bookDAO.atualizeStockBook(newIsbn, newBook.getStock() - newQuantity);
+
+        currentItem.setIsbn(newIsbn);
+        currentItem.setQuantity(newQuantity);
+        saleItemDAO.updateSaleItem(currentItem);
+    
+        System.out.println("Item de venda atualizado com sucesso.");
     }
-}
+}    

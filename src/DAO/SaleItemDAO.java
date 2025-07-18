@@ -75,15 +75,14 @@ public class SaleItemDAO {
     }
 
     public void updateSaleItem(SaleItem saleItem) throws SQLException{
-        String sql = "UPDATE item_venda SET ID_VENDA = ?, ISBN_LIVRO = ?, QUANTIDADE_ITEM = ? WHERE ID_ITEM = ?";
+        String sql = "UPDATE item_venda SET ISBN_LIVRO = ?, QUANTIDADE_ITEM = ? WHERE ID_ITEM = ?";
         PreparedStatement ps = null;
 
         try {
             ps = Conection.getConnection().prepareStatement(sql);
-            ps.setInt(1, saleItem.getIdVenda());
-            ps.setInt(2, saleItem.getIsbn());
-            ps.setInt(3, saleItem.getQuantity());
-            ps.setInt(4, saleItem.getId());
+            ps.setInt(1, saleItem.getIsbn());
+            ps.setInt(2, saleItem.getQuantity());
+            ps.setInt(3, saleItem.getId());
 
             ps.executeUpdate();
             System.out.println("DAO: Item com ID " + saleItem.getId() + " atualizado com sucesso!");
