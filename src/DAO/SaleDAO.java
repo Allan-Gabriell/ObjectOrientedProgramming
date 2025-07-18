@@ -59,5 +59,9 @@ public class SaleDAO {
         return sale;
     }
 
+    public void updateSale(int id){
+        String sql = "UPDATE venda SET DATA_VENDA = ?, ID_CLIENTE = ?, ID_FUNCIONARIO = ? WHERE ID_VENDA = ?";
+        
+    }
 
 }
