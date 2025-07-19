@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Date;
+
 
 import DAO.ClientDAO;
 import DAO.EmployeeDAO;
@@ -26,9 +28,12 @@ public class App {
     public static void main(String[] args) throws Exception {
         final ClientDAO clientDAO = new ClientDAO();
         final EmployeeDAO employeeDAO = new EmployeeDAO();
+        final BookDAO bookDAO = new BookDAO();
 
         ClientService clientService = new ClientService(clientDAO);
         EmployeeService employeeService = new EmployeeService(employeeDAO);
+        BookService bookService = new BookService(bookDAO);
+
 
         Scanner sc = new Scanner(System.in);
         int opcao;
@@ -52,7 +57,7 @@ public class App {
                         menuEmployee(sc, employeeService);
                         break;
                     case 3:
-                        menuBook(sc);
+                        menuBook(sc, bookService);
                         break;
                     case 4:
                         menuSale(sc);
@@ -222,8 +227,13 @@ public class App {
         } while (opcao != 0);
     }
 
-    static void menuBook(Scanner sc) {
+    static void menuBook(Scanner sc, BookService bookService) throws SQLException {
         int opcao = -1;
+        int isbn;
+        int edition;
+        int stock;
+        double price;
+
         do {
             try {
                 System.out.println("\n--- Menu Livro ---");
@@ -239,19 +249,43 @@ public class App {
 
                 switch (opcao) {
                     case 1:
-                        // implementar cadastro
+                        System.out.println("Informe o ISBN: ");
+                        isbn = Integer.parseInt(sc.nextLine());
+                        System.out.println("Informe o Título: ");
+                        String title = sc.nextLine();
+                        System.out.println("Informe o(a) Autor(a): ");
+                        String author = sc.nextLine();
+                        System.out.println("Informe a Edição: ");
+                        edition = Integer.parseInt(sc.nextLine());
+                        System.out.println("Informe o genero do livro: ");
+                        String gender = sc.nextLine();
+                        System.out.println("Informe a quantidade em estoque: ");
+                        stock = Integer.parseInt(sc.nextLine());
+                        System.out.println("Informe o preço: ");
+                        price = Double.parseDouble(sc.nextLine());
+                        bookService.createBook(isbn, title, author, edition, gender, stock, price);
+                        System.out.println ("ISBN: " + isbn + " Titulo: " + title+ " Autor:" + author +" Edition" + edition + " Gendero" + gender + " Estoque: " + stock + " Preço: " + price);
                         break;
                     case 2:
-                        // implementar listar
+                        List<Book> books= bookService.listBooks();
+                        for(Book book: books){
+                            System.out.println(book);
+                        }
                         break;
                     case 3:
-                        // implementar buscar
+                        System.out.println("Informe o ISBN do Livro que deseja buscar");
+                        isbn = Integer.parseInt(sc.nextLine());
+                        bookService.readBook(isbn);
                         break;
                     case 4:
-                        // implementar atualizar
+                        System.out.println("Informe o ISBN do Livro que deseja atualizar");
+                        isbn = Integer.parseInt(sc.nextLine());
+                        bookService.updateBook(isbn);
                         break;
                     case 5:
-                        // implementar remover
+                        System.out.println("Informe o ISBN do Livro que deseja remover");
+                        isbn = Integer.parseInt(sc.nextLine());
+                        bookService.deleteBook(isbn);
                         break;
                     case 0:
                         System.out.println("Voltando ao menu principal...");
@@ -267,8 +301,10 @@ public class App {
         } while (opcao != 0);
     }
 
-    static void menuSale(Scanner sc) {
+    static void menuSale(Scanner sc) throws SQLException {
         int opcao = -1;
+        int id;
+
         do {
             try {
                 System.out.println("\n--- Menu Venda ---");
@@ -283,7 +319,7 @@ public class App {
 
                 switch (opcao) {
                     case 1:
-                        // implementar registrar venda
+                        // implementar Registrar venda
                         break;
                     case 2:
                         // implementar listar vendas
