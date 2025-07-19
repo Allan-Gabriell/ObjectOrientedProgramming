@@ -59,7 +59,7 @@ public class Sale {
 
     @Override
     public String toString() {
-        return "Sale [id=" + id + ", totalValue=" + totalValue + ", date=" + date + ", idCliente=" + idCliente
-                + ", idFuncionario=" + idFuncionario + "]";
+        return "Venda ID: " + id + ", valor total: " + String.format("%.2f", totalValue) + ", data: " + date + ", ID cliente: " + idCliente
+                + ", ID funcionário" + idFuncionario;
     }
 }

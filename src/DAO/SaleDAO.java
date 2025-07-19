@@ -167,5 +167,104 @@ public class SaleDAO {
         return saleItems;
     }
     
+    public List<SaleItem> getSaleItemsBySaleId(int saleId) throws SQLException {
+        List<SaleItem> saleItems = new ArrayList<>();
+        String sql = "SELECT * FROM item_venda WHERE id_venda = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            ps = Conection.getConnection().prepareStatement(sql);
+            ps.setInt(1, saleId);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                SaleItem item = new SaleItem();
+                item.setId(rs.getInt("id_item"));
+                item.setIdSale(rs.getInt("id_venda"));
+                item.setIsbn(rs.getInt("isbn_livro"));
+                item.setQuantity(rs.getInt("quantidade_item"));
+                saleItems.add(item);
+            }
+        } finally {
+            if(ps != null) ps.close();
+            if(rs != null) rs.close();
+        }
+    
+        return saleItems;
+    }
+
+    public double calculateTotalBySaleId(int id) throws SQLException {
+        double total = 0.0;
+        String sql = "SELECT SUM(iv.quantidade_item * l.preco_livro) AS total " +
+                     "FROM item_venda iv " +
+                     "JOIN livro l ON iv.isbn_livro = l.isbn_livro " +
+                     "WHERE iv.id_venda = ?";
+    
+        PreparedStatement ps = Conection.getConnection().prepareStatement(sql);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+    
+        if (rs.next()) {
+            total = rs.getDouble("total");
+        }
+    
+        return total;
+    }
+    
+    
+    public List<Sale> getSaleItemsByClient(int Id) throws SQLException {
+        List<Sale> sales = new ArrayList<>();
+        String sql = "SELECT * FROM venda WHERE id_cliente = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try{
+            ps = Conection.getConnection().prepareStatement(sql);
+            ps.setInt(1, Id);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Sale sale = new Sale();
+                sale.setId(rs.getInt("id_venda"));
+                sale.setDate(rs.getDate("data_venda"));
+                sale.setIdFuncionario(rs.getInt("id_funcionario"));
+                sale.setIdCliente(rs.getInt("id_cliente"));
+                sales.add(sale);
+            }
+        } finally {
+            if(ps != null) ps.close();
+            if(rs != null) rs.close();
+        }
+    
+        return sales;
+    }
+
+    public List<Sale> listAllSales() throws SQLException {
+        List<Sale> sales = new ArrayList<>();
+        String sql = "SELECT * FROM venda";
+    
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+    
+        try {
+            ps = Conection.getConnection().prepareStatement(sql);
+            rs = ps.executeQuery();
+    
+            while (rs.next()) {
+                Sale sale = new Sale();
+                sale.setId(rs.getInt("id_venda"));
+                sale.setDate(rs.getDate("data_venda"));
+                sale.setIdCliente(rs.getInt("id_cliente"));
+                sale.setIdFuncionario(rs.getInt("id_funcionario"));
+                sales.add(sale);
+            }
+        } finally {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+        }
+    
+        return sales;
+    }
     
 }

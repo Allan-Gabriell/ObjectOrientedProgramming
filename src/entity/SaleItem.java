@@ -35,6 +35,6 @@ public class SaleItem {
 
     @Override
     public String toString() {
-        return "SaleItem [id=" + id + ", quantity=" + quantity + ", idSale=" + idSale + ", isbn=" + isbn + "]";
+        return "----------\n" +  "Item: " + id + "\nQuantidade: " + quantity + " \nID da venda: " + idSale + " \nISBN: " + isbn + "\n----------" + "\n";
     }
 }

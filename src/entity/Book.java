@@ -75,8 +75,8 @@ public class Book {
 
    @Override
        public String toString() {
-           return "Livro [isbn=" + isbn + ", title=" + title + ", author=" + author +
-                   ", edition=" + edition + ", gender=" + gender + ", stock=" + stock +
-                   ", price=" + String.format("%.2f", price) + "]";
+           return "Livro ISBN: " + isbn + ", titulo: " + title + ", autor: " + author +
+                   ", edição: " + edition + ", gênero: " + gender + ", estoque: " + stock +
+                   ", preço: " + String.format("%.2f", price);
        }
 }

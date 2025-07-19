@@ -6,19 +6,28 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import DAO.BookDAO;
+import DAO.ClientDAO;
 import DAO.EmployeeDAO;
 import DAO.SaleDAO;
+import DAO.SaleItemDAO;
+import entity.Book;
 import entity.Employee;
 import entity.Sale;
+import entity.SaleItem;
 
 public class SaleService {
     private SaleDAO saleDAO;
     private EmployeeDAO employeeDAO;
+    private SaleItemService saleItemService;
+    private ClientDAO clientDAO;
     Scanner sc = new Scanner(System.in);
 
-    public SaleService(SaleDAO saleDAO, EmployeeDAO employeeDAO) {
+    public SaleService(SaleDAO saleDAO, EmployeeDAO employeeDAO, SaleItemDAO saleItemDAO, BookDAO bookDAO, ClientDAO clientDAO) {
         this.saleDAO = saleDAO;
         this.employeeDAO = employeeDAO;
+        this.saleItemService = new SaleItemService(saleItemDAO, saleDAO, bookDAO);
+        this.clientDAO = clientDAO;
     }
 
     public void updateSale(int id) throws SQLException{
@@ -39,6 +48,14 @@ public class SaleService {
         saleDAO.deleteSale(id);
     }
 
+    public void addSaleItemSale(SaleItem saleItem) throws SQLException{
+        saleItemService.createSaleItem(saleItem.getIsbn());
+    }
+
+    public void deleteSaleItemSale(SaleItem saleItem) throws SQLException{
+        saleItemService.deleteSaleItem(saleItem.getId());
+    }
+
     public void listSaleEmployee(int id) throws SQLException{
         Employee employee = employeeDAO.searchEmployee(id);
         System.out.println("Lista de vendas do funcionário " + employee.getName());
@@ -48,4 +65,34 @@ public class SaleService {
         }
     }
 
+    public List<SaleItem> listSaleItem(int id) {
+        try {
+            List<SaleItem> saleItems = saleDAO.getSaleItemsBySaleId(id);
+            return saleItems;
+        } catch (SQLException e) {
+            return new ArrayList<>(); 
+        }
+    }
+    
+    public void listSaleClient(int id) throws SQLException{
+        List<Sale> sales = saleDAO.getSaleItemsByClient(id);
+        System.out.println("----- Dados da Venda -----");
+        for(Sale sale : sales){
+            sale.setTotalValue(saleDAO.calculateTotalBySaleId(sale.getId()));
+            System.out.println(sale + "\n-- Dados do funcionário --");
+            EmployeeService employeeService = new EmployeeService(employeeDAO);
+            System.out.println(employeeService.readEmployee(sale.getIdFuncionario()));
+        }
+        System.out.println("---- Dados da cliente ----");
+        ClientService clientService = new ClientService(clientDAO);
+        clientService.displayClientData(id);
+    }
+
+    public List<Sale> salesHistory() throws SQLException{
+        List<Sale> sales = saleDAO.listAllSales();
+        for(Sale sale: sales){
+            sale.setTotalValue(saleDAO.calculateTotalBySaleId(sale.getId()));
+        }
+        return sales;
+    }
 }
