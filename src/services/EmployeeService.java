@@ -68,7 +68,7 @@ public class EmployeeService {
         employeeDAO.updateEmployee(employee);
     }
 
-    public void deletedEmployee(int id) throws SQLException{
+    public void deleteEmployee(int id) throws SQLException{
         Employee employee = employeeDAO.searchEmployee(id);
         employeeDAO.deletedEmployee(employee);
     }
