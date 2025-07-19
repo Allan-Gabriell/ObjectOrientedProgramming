@@ -25,8 +25,10 @@ import services.SaleService;
 public class App {
     public static void main(String[] args) throws Exception {
         final ClientDAO clientDAO = new ClientDAO();
+        final EmployeeDAO employeeDAO = new EmployeeDAO();
 
         ClientService clientService = new ClientService(clientDAO);
+        EmployeeService employeeService = new EmployeeService(employeeDAO);
 
         Scanner sc = new Scanner(System.in);
         int opcao;
@@ -38,26 +40,22 @@ public class App {
                 System.out.println("2. Funcionário");
                 System.out.println("3. Livro");
                 System.out.println("4. Venda");
-                System.out.println("5. Item de Venda");
                 System.out.println("0. Sair");
                 System.out.print("Escolha uma opção: ");
                 opcao = Integer.parseInt(sc.nextLine());
 
                 switch (opcao) {
                     case 1:
-                        menuCliente(sc, clientService);
+                        menuClient(sc, clientService);
                         break;
                     case 2:
-                        menuFuncionario(sc);
+                        menuEmployee(sc, employeeService);
                         break;
                     case 3:
-                        menuLivro(sc);
+                        menuBook(sc);
                         break;
                     case 4:
-                        menuVenda(sc);
-                        break;
-                    case 5:
-                        menuItemVenda(sc);
+                        menuSale(sc);
                         break;
                     case 0:
                         System.out.println("Encerrando...");
@@ -76,7 +74,7 @@ public class App {
         sc.close();
     }
 
-    static void menuCliente(Scanner sc, ClientService clientService) throws SQLException {
+    static void menuClient(Scanner sc, ClientService clientService) throws SQLException {
         int opcao = -1;
         int id;
         do {
@@ -142,14 +140,16 @@ public class App {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida! Por favor, insira um número.");
-                // sc.nextLine();
                 opcao = -1; 
             }
         } while (opcao != 0);
     }
 
-    static void menuFuncionario(Scanner scanner) {
+    static void menuEmployee(Scanner sc, EmployeeService employeeService) throws SQLException {
         int opcao = -1;
+        int admin;
+        int id;
+        boolean admini = false;
         do {
             try {
                 System.out.println("\n--- Menu Funcionário ---");
@@ -160,24 +160,53 @@ public class App {
                 System.out.println("5. Remover funcionário");
                 System.out.println("0. Voltar");
                 System.out.print("Escolha uma opção: ");
-                opcao = scanner.nextInt();
-                scanner.nextLine();
+                opcao = sc.nextInt();
+                sc.nextLine();
 
                 switch (opcao) {
                     case 1:
-                        // implementar cadastro
-                        break;
+                        System.out.print("Informe o nome do funcionário: ");
+                        String name = sc.nextLine();
+                        System.out.print("Informe o e-mail: ");
+                        String email = sc.nextLine();
+                        System.out.print("O funcionário é administrador? (1 - Sim, 2 - Não) ");
+                        try {
+                            admin = Integer.parseInt(sc.nextLine());
+                            if(admin == 1) admini = true;
+                        } catch(InputMismatchException e){
+                            System.out.println("Entrada inválida! Por favor, insira um número.");
+                        }
+                        System.out.print("Informe o a senha: ");
+                        String password = sc.nextLine();
+                        employeeService.createEmployee(name, email, admini, password);
                     case 2:
-                        // implementar listar
+                        List<Employee> employees = employeeService.listEmployees();
+                        for(Employee employee : employees){
+                            System.out.println(employee);
+                        }
                         break;
                     case 3:
-                        // implementar buscar
+                        System.out.print("Informe o ID do funcionário: ");
+                        id = Integer.parseInt(sc.nextLine());
+                        System.out.println(employeeService.readEmployee(id));
                         break;
                     case 4:
-                        // implementar atualizar
+                        List<Employee> employees1 = employeeService.listEmployees();
+                        for(Employee employee : employees1){
+                            System.out.println(employee);
+                        }
+                        System.out.print("Informe o ID do funcionário: ");
+                        id = Integer.parseInt(sc.nextLine());
+                        employeeService.updateEmployee(id);
                         break;
                     case 5:
-                        // implementar remover
+                        List<Employee> employees2 = employeeService.listEmployees();
+                        for(Employee employee : employees2){
+                            System.out.println(employee);
+                        }
+                        System.out.print("Informe o ID do funcionário: ");
+                        id = Integer.parseInt(sc.nextLine());
+                        employeeService.deleteEmployee(id);
                         break;
                     case 0:
                         System.out.println("Voltando ao menu principal...");
@@ -187,13 +216,13 @@ public class App {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida! Por favor, insira um número.");
-                scanner.nextLine();
+                sc.nextLine();
                 opcao = -1;
             }
         } while (opcao != 0);
     }
 
-    static void menuLivro(Scanner scanner) {
+    static void menuBook(Scanner sc) {
         int opcao = -1;
         do {
             try {
@@ -205,8 +234,8 @@ public class App {
                 System.out.println("5. Remover livro");
                 System.out.println("0. Voltar");
                 System.out.print("Escolha uma opção: ");
-                opcao = scanner.nextInt();
-                scanner.nextLine();
+                opcao = sc.nextInt();
+                sc.nextLine();
 
                 switch (opcao) {
                     case 1:
@@ -232,13 +261,13 @@ public class App {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida! Por favor, insira um número.");
-                scanner.nextLine();
+                sc.nextLine();
                 opcao = -1;
             }
         } while (opcao != 0);
     }
 
-    static void menuVenda(Scanner scanner) {
+    static void menuSale(Scanner sc) {
         int opcao = -1;
         do {
             try {
@@ -249,8 +278,8 @@ public class App {
                 System.out.println("4. Excluir venda");
                 System.out.println("0. Voltar");
                 System.out.print("Escolha uma opção: ");
-                opcao = scanner.nextInt();
-                scanner.nextLine();
+                opcao = sc.nextInt();
+                sc.nextLine();
 
                 switch (opcao) {
                     case 1:
@@ -273,44 +302,9 @@ public class App {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida! Por favor, insira um número.");
-                scanner.nextLine();
-                opcao = -1;
-            }
-        } while (opcao != 0);
-    }
-
-    static void menuItemVenda(Scanner scanner) {
-        int opcao = -1;
-        do {
-            try {
-                System.out.println("\n--- Menu ItemVenda ---");
-                System.out.println("1. Adicionar item à venda");
-                System.out.println("2. Listar itens de uma venda");
-                System.out.println("0. Voltar");
-                System.out.print("Escolha uma opção: ");
-                opcao = scanner.nextInt();
-                scanner.nextLine();
-
-                switch (opcao) {
-                    case 1:
-                        // implementar adicionar item
-                        break;
-                    case 2:
-                        // implementar listar itens
-                        break;
-                    case 0:
-                        System.out.println("Voltando ao menu principal...");
-                        break;
-                    default:
-                        System.out.println("Opção inválida!");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Entrada inválida! Por favor, insira um número.");
-                scanner.nextLine();
+                sc.nextLine();
                 opcao = -1;
             }
         } while (opcao != 0);
     }
 }
-
-

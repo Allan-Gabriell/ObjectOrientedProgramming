@@ -24,7 +24,7 @@ public class EmployeeDAO {
 
             ps.execute();
             ps.close();
-
+            System.out.println("DAO: Funcionário cadastrado com sucesso!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
