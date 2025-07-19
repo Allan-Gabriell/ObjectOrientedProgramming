@@ -9,7 +9,9 @@ import entity.Client;
 import entity.Sale;
 import entity.SaleItem;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SaleDAO {
     public void resgisterSale (Sale sale){
@@ -121,4 +123,49 @@ public class SaleDAO {
         }
     }
 
+    public List<Sale> listSaleEmployee(int idFuncionario) throws SQLException {
+        String sql = "SELECT " +
+                     "    v.id_venda, " +
+                     "    v.data_venda, " +
+                     "    v.id_funcionario, " +
+                     "    v.id_cliente, " +
+                     "    f.nome_funcionario, " +
+                     "    SUM(iv.quantidade_item * l.preco_livro) AS total_venda " +
+                     "FROM venda v " +
+                     "JOIN funcionario f ON v.id_funcionario = f.id_funcionario " +
+                     "JOIN item_venda iv ON v.id_venda = iv.id_venda " +
+                     "JOIN livro l ON iv.isbn_livro = l.isbn_livro " +
+                     "WHERE f.id_funcionario = ? " +
+                     "GROUP BY v.id_venda, v.data_venda, v.id_funcionario, v.id_cliente, f.nome_funcionario " +
+                     "ORDER BY v.id_venda;";
+    
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Sale> saleItems = new ArrayList<>();
+    
+        try {
+            ps = Conection.getConnection().prepareStatement(sql);
+            ps.setInt(1, idFuncionario);
+    
+            rs = ps.executeQuery();
+    
+            while (rs.next()) {
+                Sale sale = new Sale();
+                sale.setId(rs.getInt("id_venda"));
+                sale.setDate(rs.getDate("data_venda"));
+                sale.setIdFuncionario(rs.getInt("id_funcionario"));
+                sale.setIdCliente(rs.getInt("id_cliente"));
+                sale.setTotalValue(rs.getDouble("total_venda"));
+                
+                saleItems.add(sale);
+            }
+        } finally {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+        }
+    
+        return saleItems;
+    }
+    
+    
 }

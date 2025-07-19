@@ -9,7 +9,6 @@ import entity.Employee;
 
 public class EmployeeService {
     private EmployeeDAO employeeDAO;
-    Scanner sc = new Scanner(System.in);
 
     public EmployeeService(EmployeeDAO employeeDAO) {
         this.employeeDAO = employeeDAO;
@@ -20,13 +19,23 @@ public class EmployeeService {
         employeeDAO.registerEmployee(employee);
     }
 
-    public void logIn(String email, String password) throws SQLException{
-        Employee employee = employeeDAO.getLastEmployee();
-        if(employee.getEmail().equals(email) && employee.getPassword().equals(password)){
-            System.out.println("Loguin realizado com sucesso!");
-        } else {
-            System.out.println("Loguin ou senha inválidos informe novamente: ");
-        }
+    public void logIn(String email, String password) throws SQLException {
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            Employee employee = employeeDAO.getEmployeeByEmail(email);
+            if(employee != null && employee.getPassword().equals(password)){
+                System.out.println("Login realizado com sucesso!");
+                break;
+            } else {
+                System.out.println("Login ou senha inválidos. Tente novamente:");
+    
+                System.out.print("Informe o e-mail: ");
+                email = sc.nextLine();
+        
+                System.out.print("Informe a senha: ");
+                password = sc.nextLine();
+            }
+        } 
     }
 
     public Employee readEmployee(int id) throws SQLException{
@@ -35,6 +44,7 @@ public class EmployeeService {
     }
 
     public void updateEmployee(int id) throws SQLException{ 
+        Scanner sc = new Scanner(System.in);
         Employee employee = new Employee();
         employee = employeeDAO.searchEmployee(id);
 

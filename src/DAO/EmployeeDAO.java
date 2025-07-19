@@ -142,5 +142,33 @@ public class EmployeeDAO {
     
         return employee;
     }
+
+    public Employee getEmployeeByEmail(String email) throws SQLException {
+        String sql = "SELECT * FROM funcionario WHERE EMAIL_FUNCIONARIO = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Employee employee = null;
+        
+        try {
+            ps = Conection.getConnection().prepareStatement(sql);
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+    
+            if (rs.next()) {
+                employee = new Employee();
+                employee.setId(rs.getInt("ID_FUNCIONARIO"));
+                employee.setName(rs.getString("NOME_FUNCIONARIO"));
+                employee.setEmail(rs.getString("EMAIL_FUNCIONARIO"));
+                employee.setAdmin(rs.getBoolean("ADMIN_FUNCIONARIO"));
+                employee.setPassword(rs.getString("SENHA_FUNCIONARIO"));
+            }
+        } finally {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+        }
+    
+        return employee;
+    }
+    
     
 }
