@@ -29,4 +29,8 @@ public class SaleService {
         saleDAO.resgisterSale(sale);
         System.out.println("Venda criada com sucesso.");
     }
+
+    public void deleteSale(int id) throws SQLException{
+        saleDAO.deleteSale(id);
+    }
 }

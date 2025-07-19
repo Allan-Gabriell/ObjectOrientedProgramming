@@ -106,4 +106,19 @@ public class SaleDAO {
         }
     }
 
+    public void deleteSale(int id) throws SQLException{
+        String sql =  "DELETE FROM venda WHERE ID_VENDA = ?";
+        PreparedStatement ps = null;
+
+        try {
+            ps = Conection.getConnection().prepareStatement(sql);
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+            System.out.println("DAO: Venda com o id " + id + " deletado com sucesso!");
+        } finally {
+            if(ps != null) ps.close();
+        }
+    }
+
 }
