@@ -22,7 +22,7 @@ public class ClientDAO {
 
             ps.execute();
             ps.close();
-            
+            System.out.println("DAO: Cliente cadastrado com sucesso!");
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
