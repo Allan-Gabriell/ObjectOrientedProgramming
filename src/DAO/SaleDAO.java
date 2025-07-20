@@ -5,12 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import conection.Conection;
-import entity.Client;
 import entity.Sale;
 import entity.SaleItem;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SaleDAO {
@@ -124,20 +122,7 @@ public class SaleDAO {
     }
 
     public List<Sale> listSaleEmployee(int idFuncionario) throws SQLException {
-        String sql = "SELECT " +
-                     "    v.id_venda, " +
-                     "    v.data_venda, " +
-                     "    v.id_funcionario, " +
-                     "    v.id_cliente, " +
-                     "    f.nome_funcionario, " +
-                     "    SUM(iv.quantidade_item * l.preco_livro) AS total_venda " +
-                     "FROM venda v " +
-                     "JOIN funcionario f ON v.id_funcionario = f.id_funcionario " +
-                     "JOIN item_venda iv ON v.id_venda = iv.id_venda " +
-                     "JOIN livro l ON iv.isbn_livro = l.isbn_livro " +
-                     "WHERE f.id_funcionario = ? " +
-                     "GROUP BY v.id_venda, v.data_venda, v.id_funcionario, v.id_cliente, f.nome_funcionario " +
-                     "ORDER BY v.id_venda;";
+        String sql = "SELECT * FROM venda WHERE ID_FUNCIONARIO = ?";
     
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -155,7 +140,6 @@ public class SaleDAO {
                 sale.setDate(rs.getDate("data_venda"));
                 sale.setIdEmploee(rs.getInt("id_funcionario"));
                 sale.setIdClient(rs.getInt("id_cliente"));
-                sale.setTotalValue(rs.getDouble("total_venda"));
                 
                 saleItems.add(sale);
             }
@@ -194,23 +178,6 @@ public class SaleDAO {
         return saleItems;
     }
 
-    public double calculateTotalBySaleId(int id) throws SQLException {
-        double total = 0.0;
-        String sql = "SELECT SUM(iv.quantidade_item * l.preco_livro) AS total " +
-                     "FROM item_venda iv " +
-                     "JOIN livro l ON iv.isbn_livro = l.isbn_livro " +
-                     "WHERE iv.id_venda = ?";
-    
-        PreparedStatement ps = Conection.getConnection().prepareStatement(sql);
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-    
-        if (rs.next()) {
-            total = rs.getDouble("total");
-        }
-    
-        return total;
-    }
     
     
     public List<Sale> getSaleItemsByClient(int Id) throws SQLException {
@@ -242,19 +209,7 @@ public class SaleDAO {
 
     public List<Sale> listAllSales() throws SQLException {
         List<Sale> sales = new ArrayList<>();
-        String sql = """
-                        SELECT 
-                            v.id_venda,
-                            v.data_venda,
-                            v.id_cliente,
-                            v.id_funcionario,
-                            COALESCE(SUM(iv.quantidade_item * l.preco_livro), 0) AS total
-                        FROM venda v
-                        LEFT JOIN item_venda iv ON v.id_venda = iv.id_venda
-                        LEFT JOIN livro l ON iv.isbn_livro = l.isbn_livro
-                        GROUP BY v.id_venda, v.data_venda, v.id_cliente, v.id_funcionario
-                        ORDER BY v.id_venda
-                    """;
+        String sql = "SELECT * FROM venda";
     
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -269,7 +224,6 @@ public class SaleDAO {
                 sale.setDate(rs.getDate("data_venda"));
                 sale.setIdClient(rs.getInt("id_cliente"));
                 sale.setIdEmploee(rs.getInt("id_funcionario"));
-                sale.setTotalValue(rs.getDouble("total"));
                 sales.add(sale);
             }
         } finally {

@@ -2,7 +2,6 @@ package services;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,7 +10,6 @@ import DAO.ClientDAO;
 import DAO.EmployeeDAO;
 import DAO.SaleDAO;
 import DAO.SaleItemDAO;
-import entity.Book;
 import entity.Employee;
 import entity.Sale;
 import entity.SaleItem;
@@ -58,6 +56,7 @@ public class SaleService {
 
     public void displayDataSale(int id) throws SQLException{
         Sale sale = saleDAO.searchSale(id);
+        sale.setTotalValue(saleItemService.calculateSubtotal(sale.getId()));
         System.out.println(sale);
         System.out.println(employeeDAO.searchEmployee(sale.getIdEmploee()));
         System.out.println(clientDAO.searchClientById(sale.getIdClient()));
@@ -68,6 +67,7 @@ public class SaleService {
         System.out.println("Lista de vendas do funcionário " + employee.getName());
         List<Sale> sales = saleDAO.listSaleEmployee(id);
         for(Sale sale : sales){
+            sale.setTotalValue(saleItemService.calculateSubtotal(sale.getId()));
             System.out.println(sale);
 
         }
@@ -86,7 +86,7 @@ public class SaleService {
         List<Sale> sales = saleDAO.getSaleItemsByClient(id);
         System.out.println("----- Dados da Venda -----");
         for(Sale sale : sales){
-            sale.setTotalValue(saleDAO.calculateTotalBySaleId(sale.getId()));
+            sale.setTotalValue(saleItemService.calculateSubtotal(sale.getId()));
             System.out.println(sale + "\n-- Dados do funcionário --");
             EmployeeService employeeService = new EmployeeService(employeeDAO);
             System.out.println(employeeService.readEmployee(sale.getIdEmploee()));
@@ -99,7 +99,7 @@ public class SaleService {
     public List<Sale> salesHistory() throws SQLException{
         List<Sale> sales = saleDAO.listAllSales();
         for(Sale sale: sales){
-            sale.setTotalValue(saleDAO.calculateTotalBySaleId(sale.getId()));
+            sale.setTotalValue(saleItemService.calculateSubtotal(sale.getId()));
         }
         return sales;
     }

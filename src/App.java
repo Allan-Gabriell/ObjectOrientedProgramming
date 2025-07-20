@@ -1,11 +1,9 @@
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Date;
 
 
 import DAO.ClientDAO;
@@ -379,6 +377,7 @@ public class App {
                     case 4:
                         List<Sale> sales = saleDAO2.listAllSales();
                         for(Sale sale1: sales){
+                            sale1.setTotalValue(saleItemService.calculateSubtotal(sale1.getId()));
                             System.out.println(sale1);
                         }
                         System.out.print("Informe o ID da venda: ");

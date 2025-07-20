@@ -115,9 +115,9 @@ public class SaleItemService {
         saleItemDAO.deleteSaleItem(id);
     }
 
-    public double calculateSubtotal() throws SQLException {
+    public double calculateSubtotal(int id) throws SQLException {
         double subtotal = 0.0;
-        List<SaleItem> saleItems = saleItemDAO.loadSaleItem();
+        List<SaleItem> saleItems = saleItemDAO.loadSaleItem(id);
     
         for (SaleItem item : saleItems) {
             double unitPrice = bookDAO.searcBookByISBNBook(item.getIsbn()).getPrice();

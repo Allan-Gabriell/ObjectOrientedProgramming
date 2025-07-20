@@ -32,6 +32,34 @@ public class SaleItemDAO {
         }
     }
     
+    public List<SaleItem> loadSaleItem(int idVenda) throws SQLException {
+        String sql = "SELECT id_item, id_venda, isbn_livro, quantidade_item FROM item_venda WHERE id_venda = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<SaleItem> saleItems = new ArrayList<>();
+    
+        try {
+            ps = Conection.getConnection().prepareStatement(sql);
+            ps.setInt(1, idVenda); // <- ID dinâmico
+            rs = ps.executeQuery();
+    
+            while (rs.next()) {
+                SaleItem saleItem = new SaleItem();
+                saleItem.setId(rs.getInt("id_item"));
+                saleItem.setIdSale(rs.getInt("id_venda"));
+                saleItem.setIsbn(rs.getInt("isbn_livro"));
+                saleItem.setQuantity(rs.getInt("quantidade_item"));
+                saleItems.add(saleItem);
+            }
+        } finally {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+        }
+    
+        return saleItems;
+    }
+    
+
     public List<SaleItem> loadSaleItem() throws SQLException {
         String sql = "SELECT id_item, id_venda, isbn_livro, quantidade_item FROM item_venda WHERE id_venda = (SELECT MAX(id_venda) FROM venda)";
         PreparedStatement ps = null;
