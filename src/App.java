@@ -375,6 +375,7 @@ public class App {
                 System.out.println("7. Listar vendas funcionário");
                 System.out.println("8. Listar vendas cliente");
                 System.out.println("9. Histórico de vendas");
+                System.out.println("10. Editar item venda");
                 System.out.println("0. Voltar");
                 System.out.print("Escolha uma opção: ");
                 opcao = sc.nextInt();
@@ -455,6 +456,12 @@ public class App {
                     case 9:
                         List<Sale> saleHistory = saleService.salesHistory();
                         for(Sale saleH: saleHistory) System.out.println(saleH);
+                        break;
+                    case 10:
+                        saleItemService.dataDisplayItem();
+                        System.out.print("Informe o ID do item: ");
+                        id = Integer.parseInt(sc.nextLine());
+                        saleItemService.editSaleItem(id);
                         break;
                     case 0:
                         System.out.println("Voltando ao menu principal...");
