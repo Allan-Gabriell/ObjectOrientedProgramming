@@ -131,8 +131,7 @@ public class BookDAO {
          }
          return books;
      }
-    
-    //para essa função funcionar corretamente tenho que adicionar um id em livro
+
     public Book getLastBook() throws SQLException {
         String sql = "SELECT * FROM livro ORDER BY ISBN_LIVRO DESC LIMIT 1";
         PreparedStatement ps = null;

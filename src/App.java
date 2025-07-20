@@ -28,8 +28,7 @@ public class App {
         final EmployeeDAO employeeDAO = new EmployeeDAO();
         final BookDAO bookDAO = new BookDAO();
         final SaleDAO saleDAO = new SaleDAO();
-        final SaleItemDAO saleItemDAO = new SaleItemDAO();
-    
+        final SaleItemDAO saleItemDAO = new SaleItemDAO(); 
 
         ClientService clientService = new ClientService(clientDAO);
         EmployeeService employeeService = new EmployeeService(employeeDAO);
@@ -37,9 +36,52 @@ public class App {
         SaleService saleService = new SaleService(saleDAO, employeeDAO, saleItemDAO, bookDAO, clientDAO);
         SaleItemService saleItemService = new SaleItemService(saleItemDAO, saleDAO, bookDAO);
 
-
         Scanner sc = new Scanner(System.in);
         int opcao;
+
+        System.out.println("--- Bem-vindo ao Sovil ---");
+        System.out.println("O sistema de gerenciamento de livrarias");
+
+        boolean autenticado = false;
+
+        while (!autenticado) {
+            System.out.println("1. Realizar Login");
+            System.out.println("2. Cadastrar Funcionário");
+            System.out.print("Escolha uma opção: ");
+            
+            String opcaoInicial = sc.nextLine();
+
+            switch (opcaoInicial) {
+                case "1":
+                    System.out.print("Informe o e-mail: ");
+                    String email = sc.nextLine();
+                    System.out.print("Informe a senha: ");
+                    String password = sc.nextLine();
+
+                    try {
+                        employeeService.logIn(email, password);
+                        autenticado = true;
+                    } catch (SQLException e) {
+                        System.out.println("Erro ao tentar logar: " + e.getMessage());
+                    }
+                    break;
+                case "2":
+                    System.out.print("Informe o nome do funcionário: ");
+                    String name = sc.nextLine();
+                    System.out.print("Informe o e-mail: ");
+                    String emailF = sc.nextLine();
+                    System.out.print("O funcionário é administrador? (1 - Sim / 2 - Não): ");
+                    boolean isAdmin = sc.nextLine().equals("1");
+                    System.out.print("Informe a senha: ");
+                    String passwordF = sc.nextLine();
+
+                    employeeService.createEmployee(name, emailF, isAdmin, passwordF);
+                    System.out.println("Cadastro realizado com sucesso!\n");
+                    break;
+                default:
+                    System.out.println("Opção inválida, tente novamente.");
+            }
+        }
 
         do {
             try {
@@ -72,9 +114,8 @@ public class App {
                         System.out.println("Opção inválida!");
                         break;
                 }
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Entrada inválida! Por favor, insira um número.");
-                sc.nextLine(); 
                 opcao = -1; 
             }
         } while (opcao != 0);
@@ -178,12 +219,7 @@ public class App {
                         System.out.print("Informe o e-mail: ");
                         String email = sc.nextLine();
                         System.out.print("O funcionário é administrador? (1 - Sim, 2 - Não) ");
-                        try {
-                            admin = Integer.parseInt(sc.nextLine());
-                            if(admin == 1) admini = true;
-                        } catch(InputMismatchException e){
-                            System.out.println("Entrada inválida! Por favor, insira um número.");
-                        }
+                        admini = sc.nextLine().equals("1");
                         System.out.print("Informe o a senha: ");
                         String password = sc.nextLine();
                         employeeService.createEmployee(name, email, admini, password);

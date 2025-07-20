@@ -28,7 +28,7 @@ public class SaleDAO {
 
             ps.execute();
             ps.close();
-
+            System.out.println("DAO: Venda crianda com sucesso!");
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
