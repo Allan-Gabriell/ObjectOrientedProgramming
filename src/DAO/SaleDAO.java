@@ -24,8 +24,8 @@ public class SaleDAO {
             java.sql.Date sqlDate = new java.sql.Date(sale.getDate().getTime());
 
             ps.setDate(1, sqlDate);
-            ps.setInt(2, sale.getIdCliente());
-            ps.setInt(3, sale.getIdFuncionario());
+            ps.setInt(2, sale.getIdClient());
+            ps.setInt(3, sale.getIdEmploee());
 
 
             ps.execute();
@@ -51,8 +51,8 @@ public class SaleDAO {
                 sale = new Sale();
                 sale.setId(rs.getInt("ID_VENDA"));
                 sale.setDate(rs.getDate("DATA_VENDA"));
-                sale.setIdCliente(rs.getInt("ID_CLIENTE"));
-                sale.setIdFuncionario(rs.getInt("ID_FUNCIONARIO"));
+                sale.setIdClient(rs.getInt("ID_CLIENTE"));
+                sale.setIdEmploee(rs.getInt("ID_FUNCIONARIO"));
             }
         } finally {
             if (rs != null) rs.close();
@@ -77,8 +77,8 @@ public class SaleDAO {
                 sale = new Sale();
                 sale.setId(resultSet.getInt("ID_VENDA"));
                 sale.setDate(resultSet.getDate("DATA_VENDA"));
-                sale.setIdCliente(resultSet.getInt("ID_CLIENTE"));
-                sale.setIdFuncionario(resultSet.getInt("ID_FUNCIONARIO"));
+                sale.setIdClient(resultSet.getInt("ID_CLIENTE"));
+                sale.setIdEmploee(resultSet.getInt("ID_FUNCIONARIO"));
             }
         } finally {
             if(resultSet != null) resultSet.close();
@@ -97,8 +97,8 @@ public class SaleDAO {
             java.sql.Date sqlDate = new java.sql.Date(sale.getDate().getTime());
             
             ps.setDate(1, sqlDate);
-            ps.setInt(2, sale.getIdCliente());
-            ps.setInt(3, sale.getIdFuncionario());
+            ps.setInt(2, sale.getIdClient());
+            ps.setInt(3, sale.getIdEmploee());
             ps.setInt(4, sale.getId());
 
             ps.executeUpdate();
@@ -153,8 +153,8 @@ public class SaleDAO {
                 Sale sale = new Sale();
                 sale.setId(rs.getInt("id_venda"));
                 sale.setDate(rs.getDate("data_venda"));
-                sale.setIdFuncionario(rs.getInt("id_funcionario"));
-                sale.setIdCliente(rs.getInt("id_cliente"));
+                sale.setIdEmploee(rs.getInt("id_funcionario"));
+                sale.setIdClient(rs.getInt("id_cliente"));
                 sale.setTotalValue(rs.getDouble("total_venda"));
                 
                 saleItems.add(sale);
@@ -228,8 +228,8 @@ public class SaleDAO {
                 Sale sale = new Sale();
                 sale.setId(rs.getInt("id_venda"));
                 sale.setDate(rs.getDate("data_venda"));
-                sale.setIdFuncionario(rs.getInt("id_funcionario"));
-                sale.setIdCliente(rs.getInt("id_cliente"));
+                sale.setIdEmploee(rs.getInt("id_funcionario"));
+                sale.setIdClient(rs.getInt("id_cliente"));
                 sales.add(sale);
             }
         } finally {
@@ -242,7 +242,19 @@ public class SaleDAO {
 
     public List<Sale> listAllSales() throws SQLException {
         List<Sale> sales = new ArrayList<>();
-        String sql = "SELECT * FROM venda";
+        String sql = """
+                        SELECT 
+                            v.id_venda,
+                            v.data_venda,
+                            v.id_cliente,
+                            v.id_funcionario,
+                            COALESCE(SUM(iv.quantidade_item * l.preco_livro), 0) AS total
+                        FROM venda v
+                        LEFT JOIN item_venda iv ON v.id_venda = iv.id_venda
+                        LEFT JOIN livro l ON iv.isbn_livro = l.isbn_livro
+                        GROUP BY v.id_venda, v.data_venda, v.id_cliente, v.id_funcionario
+                        ORDER BY v.id_venda
+                    """;
     
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -255,8 +267,9 @@ public class SaleDAO {
                 Sale sale = new Sale();
                 sale.setId(rs.getInt("id_venda"));
                 sale.setDate(rs.getDate("data_venda"));
-                sale.setIdCliente(rs.getInt("id_cliente"));
-                sale.setIdFuncionario(rs.getInt("id_funcionario"));
+                sale.setIdClient(rs.getInt("id_cliente"));
+                sale.setIdEmploee(rs.getInt("id_funcionario"));
+                sale.setTotalValue(rs.getDouble("total"));
                 sales.add(sale);
             }
         } finally {
@@ -266,5 +279,6 @@ public class SaleDAO {
     
         return sales;
     }
+    
     
 }

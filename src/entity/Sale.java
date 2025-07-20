@@ -6,33 +6,25 @@ public class Sale {
     private int id;
     private double totalValue;
     private Date date;
-    private int idCliente;
-    private int idFuncionario;
+    private int idClient;
+    private int idEmploee;
 
-    // public Sale(int id, double totalValue, Date date) {
-    //     this.id = id;
-    //     this.totalValue = totalValue;
-    //     this.date = date;
-    // }
-
-
-    public int getIdCliente() {
-        return idCliente;
+    public int getIdClient() {
+        return idClient;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setIdClient(int idClient) {
+        this.idClient = idClient;
     }
 
-    public int getIdFuncionario() {
-        return idFuncionario;
+    public int getIdEmploee() {
+        return idEmploee;
     }
 
-    public void setIdFuncionario(int idFuncionario) {
-        this.idFuncionario = idFuncionario;
+    public void setIdEmploee(int idEmploee) {
+        this.idEmploee = idEmploee;
     }
 
-    // Get and Set
     public int getId() {
         return id;
     }
@@ -59,7 +51,7 @@ public class Sale {
 
     @Override
     public String toString() {
-        return "Venda ID: " + id + ", valor total: " + String.format("%.2f", totalValue) + ", data: " + date + ", ID cliente: " + idCliente
-                + ", ID funcionário" + idFuncionario;
+        return "Venda ID: " + id + ", valor total: " + String.format("%.2f", totalValue) + ", data: " + date + ", ID cliente: " + idClient
+                + ", ID funcionário: " + idEmploee;
     }
 }

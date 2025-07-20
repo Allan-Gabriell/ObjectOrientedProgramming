@@ -22,6 +22,7 @@ public class Conection {
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
+            System.out.println("Error ao buscar dados no banco!");
             e.printStackTrace();
             return null;
         }

@@ -1,7 +1,6 @@
 package services;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -116,16 +115,18 @@ public class SaleItemService {
         saleItemDAO.deleteSaleItem(id);
     }
 
-    public double calculateSubtotal() throws SQLException{
+    public double calculateSubtotal() throws SQLException {
         double subtotal = 0.0;
         List<SaleItem> saleItems = saleItemDAO.loadSaleItem();
-        for(int i = 0; i < saleItems.size(); i++){
-            SaleItem item = saleItems.get(i);
+    
+        for (SaleItem item : saleItems) {
             double unitPrice = bookDAO.searcBookByISBNBook(item.getIsbn()).getPrice();
             subtotal += item.getQuantity() * unitPrice;
         }
+    
         return subtotal;
     }
+    
 
     public void editSaleItem(int id) throws SQLException {
         SaleItem currentItem = saleItemDAO.searchSaleItem(id);
@@ -171,5 +172,5 @@ public class SaleItemService {
     
         System.out.println("Item de venda atualizado com sucesso.");
     }
-
+    
 }    

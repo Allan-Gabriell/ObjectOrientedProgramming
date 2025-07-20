@@ -1,12 +1,17 @@
 package entity;
 
-import java.util.List;
-
 public class SaleItem {
     private int id;
     private int quantity;
     private int idSale;
     private int isbn;
+  
+    public SaleItem(int id) {
+        this.id = id;
+    }
+
+    public SaleItem() {
+    }
     
     public int getId() {
         return id;
@@ -35,6 +40,6 @@ public class SaleItem {
 
     @Override
     public String toString() {
-        return "----------\n" +  "Item: " + id + "\nQuantidade: " + quantity + " \nID da venda: " + idSale + " \nISBN: " + isbn + "\n----------" + "\n";
+        return "\n" +  "ID Item: " + id + "\nQuantidade: " + quantity + " \nID da venda: " + idSale + " \nISBN: " + isbn + "\n----------" + "\n";
     }
 }

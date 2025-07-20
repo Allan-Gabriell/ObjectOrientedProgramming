@@ -20,6 +20,7 @@ public class BookDAO {
             ps.setInt(6, book.getStock());
             ps.setDouble(7, book.getPrice());
             ps.execute();
+            System.out.println("DAO: Livro criado com sucesso!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -98,11 +99,15 @@ public class BookDAO {
 
     public void deleteBook (int isbn) throws SQLException{
         String sql = "DELETE FROM livro WHERE ISBN_LIVRO = ?";
-        try (Connection conn = Conection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)){
+        PreparedStatement ps = null;
+        try{
+            ps = Conection.getConnection().prepareStatement(sql);
             ps.setInt(1, isbn);
+
             ps.executeUpdate();
             System.out.println("DAO: Livro com ISBN " + isbn + " deletado com sucesso");
+        } finally {
+            if(ps != null) ps.close();
         }
     }
 

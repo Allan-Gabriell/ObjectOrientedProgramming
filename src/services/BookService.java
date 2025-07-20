@@ -32,14 +32,13 @@ public class BookService {
         System.out.print("Informe o autor: ");
         book.setAuthor(sc.nextLine());
         System.out.print("Informe a edição: ");
-        book.setEdition(sc.nextInt());
-        sc.nextLine();
+        book.setEdition(Integer.parseInt(sc.nextLine()));
         System.err.print("Informe o gênero: ");
         book.setGender(sc.nextLine());
         System.out.print("Informe o estoque: ");
-        book.setStock(sc.nextInt());
+        book.setStock(Integer.parseInt(sc.nextLine()));
         System.out.print("Informe o preço: ");
-        book.setPrice(sc.nextDouble());
+        book.setPrice(Double.parseDouble(sc.nextLine()));
         
         bookDAO.atualizeBook(book);
     }
