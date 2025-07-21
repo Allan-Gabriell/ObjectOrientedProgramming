@@ -196,9 +196,8 @@ public class App {
 
     static void menuEmployee(Scanner sc, EmployeeService employeeService) throws SQLException {
         int opcao = -1;
-        int admin;
         int id;
-        boolean admini = false;
+        boolean admin = false;
         do {
             try {
                 System.out.println("\n--- Menu Funcionário ---");
@@ -219,10 +218,11 @@ public class App {
                         System.out.print("Informe o e-mail: ");
                         String email = sc.nextLine();
                         System.out.print("O funcionário é administrador? (1 - Sim, 2 - Não) ");
-                        admini = sc.nextLine().equals("1");
+                        admin = sc.nextLine().equals("1");
                         System.out.print("Informe o a senha: ");
                         String password = sc.nextLine();
-                        employeeService.createEmployee(name, email, admini, password);
+                        employeeService.createEmployee(name, email, admin, password);
+                        break;
                     case 2:
                         List<Employee> employees = employeeService.listEmployees();
                         for(Employee employee : employees){

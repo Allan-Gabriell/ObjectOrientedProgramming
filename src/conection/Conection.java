@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conection {
-    public static final String url = "jdbc:mysql://nozomi.proxy.rlwy.net:36361/livraria_db";
+    public static final String url = "jdbc:mysql://yamabiko.proxy.rlwy.net:43693/livraria_db";
     public static final String user = "root";
-    public static final String password = "MzBmDCuIjLBYNwZWznpBEYdDqbOqRvAS";
+    public static final String password = "bhfgiATHmIIuwtmCUReUcfxxlxVScpQL";
 
     public static Connection conn;
 
