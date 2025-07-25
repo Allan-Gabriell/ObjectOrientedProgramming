@@ -17,8 +17,6 @@ Atualmente, este projeto foi desenvolvido por:
 
   * Leonardo Augusto Silva de Sousa
 
-  * Mauricio Paulino Flores Júnior
-
 ---
 
 ## 🛠️ Tecnologias Utilizadas
